@@ -11,6 +11,9 @@
                 <div class="p-6 text-gray-900">
                     <form action="{{ route('subscriptions.store') }}" id="card-form" method="post">
                         @csrf
+
+                        <input type="hidden" name="plan" id="plan" value="{{ request('plan') }}">
+
                         <!-- Name -->
                         <div>
                             <x-input-label for="name" :value="__('Name Of Card')" />
@@ -97,7 +100,7 @@
 
                 const hiddenInput = document.createElement('input');
                 hiddenInput.setAttribute('type', 'hidden');
-                hiddenInput.setAttribute('name', 'setupIntent');
+                hiddenInput.setAttribute('name', 'token');
                 hiddenInput.setAttribute('value', setupIntent.payment_method);
                 form.appendChild(hiddenInput);
                 form.submit();
