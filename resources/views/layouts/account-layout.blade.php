@@ -16,10 +16,18 @@
                 </li>
             </ul>
 
-            @if (auth()->user()->subscription() && !auth()->user()->subscription('default')->cancel())
+            @if (auth()->user()->subscription() && !auth()->user()->subscription('default')->canceled())
                 <ul>
                     <li><x-nav-link href="{{ route('account.subscriptions.cancel') }}" :active="request()->routeIs('account.subscriptions.cancel')">Subscription
                             Cancel</x-nav-link>
+                    </li>
+                </ul>
+            @endif
+
+            @if (auth()->user()->subscription() && auth()->user()->subscription('default')->canceled())
+                <ul>
+                    <li><x-nav-link href="{{ route('account.subscriptions.resume') }}" :active="request()->routeIs('account.subscriptions.cancel')">Subscription
+                            Resume</x-nav-link>
                     </li>
                 </ul>
             @endif

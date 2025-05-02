@@ -12,11 +12,11 @@ class SubscriptionController extends Controller
         return view('account.subscriptions.index');
     }
 
-    public function cancel(Request $request)
+    public function cancelIndex(Request $request)
     {
         $subscription = $request->user()->subscription('default');
 
-        if (!$subscription || $subscription->cancel()) {
+        if (!$subscription || $subscription->canceled()) {
             return redirect()->route('account.subscriptions')
                 ->with('error', 'You do not have an active subscription to cancel.');
         }
@@ -24,7 +24,7 @@ class SubscriptionController extends Controller
         return view('account.subscriptions.cancel');
     }
 
-    public function destroy(Request $request)
+    public function cancel(Request $request)
     {
         $subscription = $request->user()->subscription('default');
 
@@ -37,5 +37,32 @@ class SubscriptionController extends Controller
 
         return redirect()->route('account.subscriptions')
             ->with('success', 'Your subscription has been cancelled successfully.');
+    }
+
+    public function resumeIndex(Request $request)
+    {
+        $subscription = $request->user()->subscription('default');
+
+        if (!$subscription || !$subscription->canceled()) {
+            return redirect()->route('account.subscriptions')
+                ->with('error', 'You do not have an active subscription to resume.');
+        }
+
+        return view('account.subscriptions.resume');
+    }
+
+    public function resume(Request $request)
+    {
+        $subscription = $request->user()->subscription('default');
+
+        if (!$subscription || !$subscription->canceled()) {
+            return redirect()->route('account.subscriptions')
+                ->with('error', 'You do not have an active subscription to resume.');
+        }
+
+        $subscription->resume();
+
+        return redirect()->route('account.subscriptions')
+            ->with('success', 'Your subscription has been resumed successfully.');
     }
 }
